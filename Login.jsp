@@ -16,8 +16,6 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
-                        <a href="test2.lcc">손님입장</a>
-                        <a href="test3.lcc">회원가입</a>
                         <input type="submit" value="로그인">
                     </td>
                 </tr>
