@@ -48,109 +48,13 @@ public class BoardFrontController extends HttpServlet {
 		BoardCmd cmd = null;
 		String viewPage = null;
 		
-		//∞‘Ω√±€ ∏Ò∑œ ∫“∑Øø¿±‚
+		//Í≤åÏãúÍ∏Ä Î™©Î°ù Î∂àÎü¨Ïò§Í∏∞
 		if(cmdURI.equals("/boardList.bbs")){
 			cmd = new BoardListCmd();
 			cmd.execute(request, response);
 			viewPage = "boardList.jsp";
 		}
-		
-		//∞‘Ω√±€ ¿€º∫ »≠∏È¡¶∞¯
-		if(cmdURI.equals("/boardWriteForm.bbs")){
-			viewPage = "boardWrite.jsp";
-		}
-		
-		//∞‘Ω√±€ ¿€º∫ √≥∏Æ
-		if(cmdURI.equals("/boardWrite.bbs")){
-			cmd = new BoardWriteCmd();
-			cmd.execute(request, response);
-			viewPage = "boardList.bbs";
-		}
-		
-		//∞‘Ω√±€ ø≠∂˜ √≥∏Æ
-		if(cmdURI.equals("/boardRead.bbs")){
-			cmd = new BoardReadCmd();
-			cmd.execute(request, response);
-			viewPage = "boardRead.jsp";
-		}
-		
-		//∞‘Ω√±€ ºˆ¡§ ∫Òπ–π¯»£ »Æ¿Œ »≠∏È ¡¶∞¯
-		if(cmdURI.equals("/boardUpdatePassword.bbs")){
-			cmd = new BoardUpdatePasswordCmd();
-			cmd.execute(request, response);
-			viewPage = "boardUpdatePassword.jsp";
-		}
-		
-		//∞‘Ω√±€ ºˆ¡§ ∫Òπ–π¯»£ »Æ¿Œ √≥∏Æ
-		if(cmdURI.equals("/boardUpdateCheck.bbs")){
-			cmd = new BoardUpdateCheckCmd();
-			cmd.execute(request, response);
-			BoardUpdateCheckCmd checkCmd = (BoardUpdateCheckCmd) cmd;
-			if(checkCmd.password_check){
-				viewPage = "boardUpdateForm.bbs";
-			} else {
-				viewPage = "boardUpdateError.bbs";
-			}
-		}
-		
-		//∞‘Ω√±€ ºˆ¡§ ∫Òπ–π¯»£ ø¿∑˘ »≠∏È ¡¶∞¯
-		if(cmdURI.equals("/boardUpdateError.bbs")){
-			viewPage = "boardUpdateError.jsp";
-		}
-		
-		//∞‘Ω√±€ ºˆ¡§ »≠∏È ¡¶∞¯
-		if(cmdURI.equals("/boardUpdateForm.bbs")){
-			cmd = new BoardUpdateFormCmd();
-			cmd.execute(request, response);
-			viewPage = "boardUpdateForm.jsp";
-		}
-		
-		//∞‘Ω√±€ ºˆ¡§ √≥∏Æ
-		if(cmdURI.equals("/boardUpdate.bbs")){
-			cmd = new BoardUpdateCmd();
-			cmd.execute(request, response);
-			viewPage = "boardList.bbs";
-		}
-		
-		//±€ ªË¡¶ ∫Òπ–π¯»£ »Æ¿Œ »≠∏È ¡¶∞¯
-  		if(cmdURI.equals("/boardDeletePassword.bbs")){
-  			cmd = new BoardDeletePasswordCmd();
-  			cmd.execute(request, response);			
-  			viewPage = "boardDeletePassword.jsp";
-  		}
-  		
-  		//±€ ªË¡¶ ∫Òπ–π¯»£ »Æ¿Œ √≥∏Æ
-  		if(cmdURI.equals("/boardDeleteCheck.bbs")){
-  			cmd = new BoardDeleteCheckCmd();
-  			cmd.execute(request, response);
-  			
-  			BoardDeleteCheckCmd checkCmd = (BoardDeleteCheckCmd) cmd;
-  			if (checkCmd.password_check && checkCmd.reply_check){
-  				viewPage = "boardDelete.bbs";				
-  			} else {
-  				viewPage = "boardDeleteError.bbs";
-  			}
-  		}
-  		
-  		//±€ ªË¡¶ ∫Òπ–π¯»£ ø¿∑˘ »≠∏È ¡¶∞¯
-  		if(cmdURI.equals("/boardDeleteError.bbs")){
-  			viewPage = "boardDeleteError.jsp";
-  		}
-  		
-  		//±€ ªË¡¶ √≥∏Æ
-  		if(cmdURI.equals("/boardDelete.bbs")){
-  			cmd = new BoardDeleteCmd();
-  			cmd.execute(request, response);
-  			viewPage = "boardList.bbs";
-  		}
-		
-		//∞‘Ω√±€ ∞Àªˆ √≥∏Æ
-		if(cmdURI.equals("/boardSearch.bbs")){
-			cmd = new BoardSearchCmd();
-			cmd.execute(request, response);
-			viewPage = "boardSearchList.jsp";
-		}
-		
+			
 		RequestDispatcher dis = request.getRequestDispatcher(viewPage);
 		dis.forward(request, response);
 		
