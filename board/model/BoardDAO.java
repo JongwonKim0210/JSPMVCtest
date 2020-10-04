@@ -113,4 +113,48 @@ public class BoardDAO {
 		}
 		return pageCnt;
 	}
+	
+	//게시글 등록 기능 수행
+	public void boardWrite(String name, String subject, String content, String password){
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int num=1;
+		
+		try{
+			conn = ds.getConnection();
+			String sql = "SELECT IFNULL(MAX(NUM), 0) + 1 as NUM FROM BOARD";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			if(rs.next()){
+				num = rs.getInt("num");
+			}
+			
+			sql = "INSERT INTO BOARD (NUM, NAME, PASSWORD, SUBJECT, CONTENT, WRITE_DATE, WRITE_TIME, REF, STEP, LEV, READ_CNT, CHILD_CNT) " + 
+				   "VALUE(?, ?, ?, ?, ?, CURDATE(), CURTIME(), ?, 0, 0, 0, 0)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, num);
+			pstmt.setString(2, name);
+			pstmt.setString(3, password);
+			pstmt.setString(4, subject);
+			pstmt.setString(5, content);
+			pstmt.setInt(6, num);
+			
+			pstmt.executeUpdate();
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			try{
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 }
