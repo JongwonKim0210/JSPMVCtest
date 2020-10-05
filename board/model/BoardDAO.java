@@ -156,5 +156,70 @@ public class BoardDAO {
 		}
 	}
 	
+	//게시글 열람 기능 수행
+	public BoardDTO boardRead(String inputNum){
+		
+		BoardDTO writing = new BoardDTO();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try{
+			conn = ds.getConnection();
+			String sql = "UPDATE BOARD SET READ_CNT = READ_CNT + 1 WHERE NUM = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(inputNum));
+			pstmt.executeUpdate();
+			
+			sql = "SELECT NUM, NAME, PASSWORD, SUBJECT, CONTENT, " +
+			        " WRITE_DATE, WRITE_TIME, REF, STEP, LEV, READ_CNT, CHILD_CNT " + 
+					" FROM BOARD WHERE NUM = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(inputNum));
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				int num = rs.getInt("num");
+				String name = rs.getString("name");
+				String password = rs.getString("password");
+				String subject = rs.getString("subject");
+				String content = rs.getString("content");
+				Date writeDate = rs.getDate("write_date");
+				Time writeTime = rs.getTime("write_time");
+				int ref = rs.getInt("ref");
+				int step = rs.getInt("step");
+				int lev = rs.getInt("lev");
+				int readCnt = rs.getInt("read_cnt");
+				int childCnt = rs.getInt("child_cnt");
+				
+				writing.setNum(num);
+				writing.setName(name);
+				writing.setPassword(password);
+				writing.setSubject(subject);
+				writing.setContent(content);
+				writing.setWriteDate(writeDate);
+				writing.setWriteTime(writeTime);
+				writing.setRef(ref);
+				writing.setStep(step);
+				writing.setLev(lev);
+				writing.setReadCnt(readCnt);
+				writing.setChildCnt(childCnt);
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally {
+			try{
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		return writing;
+	}
+
 	
 }
