@@ -470,5 +470,85 @@ public class BoardDAO {
         }
     }
 
+	//검색 기능 수행
+	public ArrayList<BoardDTO> boardSearch(String searchOption, String searchWord){
+		ArrayList<BoardDTO> list = new ArrayList<BoardDTO>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try{
+			conn = ds.getConnection();
+			String sql = "SELECT NUM, NAME, PASSWORD, SUBJECT, CONTENT, " +
+								" WRITE_DATE, WRITE_TIME, REF, STEP, LEV, READ_CNT, CHILD_CNT FROM BOARD ";
+			
+			if(searchOption.equals("subject")){
+				sql += "WHERE subject LIKE ? ";
+				sql += "ORDER BY ref desc, step asc";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%" + searchWord + "%");
+			} else if(searchOption.equals("content")){
+				sql += "WHERE content LIKE ? ";
+				sql += "ORDER BY ref desc, step asc";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%" + searchWord + "%");
+			} else if(searchOption.equals("name")){
+				sql += "WHERE name LIKE ? ";
+				sql += "ORDER BY ref desc, step asc";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%" + searchWord + "%");
+			} else if(searchOption.equals("both")){
+				sql += "WHERE subject LIKE ? OR content LIKE ? ";
+				sql += "ORDER BY ref desc, step asc";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%" + searchWord + "%");
+				pstmt.setString(2, "%" + searchWord + "%");
+			} 
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				int num = rs.getInt("num");
+				String name = rs.getString("name");
+				String password = rs.getString("password");
+				String subject = rs.getString("subject");
+				String content = rs.getString("content");
+				Date writeDate = rs.getDate("write_date");
+				Time writeTime = rs.getTime("write_time");
+				int ref = rs.getInt("ref");
+				int step = rs.getInt("step");
+				int lev = rs.getInt("lev");
+				int readCnt = rs.getInt("read_cnt");
+				int childCnt = rs.getInt("child_cnt");
+				
+				BoardDTO writing = new BoardDTO();
+				writing.setNum(num);
+				writing.setName(name);
+				writing.setPassword(password);
+				writing.setSubject(subject);
+				writing.setContent(content);
+				writing.setWriteDate(writeDate);
+				writing.setWriteTime(writeTime);
+				writing.setRef(ref);
+				writing.setStep(step);
+				writing.setLev(lev);
+				writing.setReadCnt(readCnt);
+				writing.setChildCnt(childCnt);
+				
+				list.add(writing);
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			try{
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
 	
 }
