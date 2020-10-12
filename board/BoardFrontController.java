@@ -144,7 +144,13 @@ public class BoardFrontController extends HttpServlet {
   			viewPage = "boardList.bbs";
   		}
 		
-		
+		//게시글 검색 처리
+		if(cmdURI.equals("/boardSearch.bbs")){
+			cmd = new BoardSearchCmd();
+			cmd.execute(request, response);
+			viewPage = "boardSearchList.jsp";
+		}
+				
 		RequestDispatcher dis = request.getRequestDispatcher(viewPage);
 		dis.forward(request, response);
 		
